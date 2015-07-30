@@ -31,6 +31,7 @@
         {
           "type": "chef-solo",
           "cookbook_paths": ["cookbooks"],
+          "run_list": ["apt", "ruby_build", "rbenv::user", "nodejs::nodejs_from_source"],
           "json":
             {
               "rbenv": {
