@@ -6,6 +6,12 @@ perl -p -i -e 's#http://us.archive.ubuntu.com/ubuntu#http://mirror.rackspace.com
 apt-get -y update >/dev/null
 apt-get -y install facter linux-headers-$(uname -r) build-essential zlib1g-dev libssl-dev libreadline-gplv2-dev curl unzip >/dev/null
 
+# Upgrade to the latest version of Ubuntu
+apt-get -y dist-upgrade > /dev/null
+do-release-upgrade -f DistUpgradeViewNonInteractive
+apt-get autoremove -y > /dev/null
+apt-get clean > /dev/null
+
 # Tweak sshd to prevent DNS resolution (speed up logins)
 echo 'UseDNS no' >> /etc/ssh/sshd_config
 
@@ -22,3 +28,7 @@ GRUB_CMDLINE_LINUX="debian-installer=en_US"
 EOF
 
 update-grub
+
+# Reboot the machine to run the new kernel
+shutdown -r now
+sleep 60
