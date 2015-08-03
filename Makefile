@@ -3,3 +3,6 @@ push:
 
 validate:
 	packer validate template.json
+
+build:
+	packer build --only=vmware-iso template.json
