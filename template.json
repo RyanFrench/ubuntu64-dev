@@ -1,140 +1,134 @@
 {
-    "push": {
-      "name": "ubuntu64-dev",
-      "vcs": true
-    },
-    "variables": {
-        "atlas_username": "{{env `ATLAS_USERNAME`}}",
-        "atlas_name": "{{env `ATLAS_NAME`}}"
-    },
-    "provisioners": [
-        {
-            "type": "shell",
-            "scripts": [
-                "scripts/base.sh",
-                "scripts/dep.sh",
-                "scripts/vagrant.sh",
-                "scripts/virtualbox.sh",
-                "scripts/vmware.sh",
-                "scripts/cleanup.sh",
-                "scripts/zerodisk.sh"
-            ],
-            "override": {
-                "virtualbox-iso": {
-                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
-                },
-                "vmware-iso": {
-                    "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
-                }
-            }
-        },
-        {
-          "type": "chef-solo",
-          "cookbook_paths": ["cookbooks"],
-          "run_list": ["apt", "ruby_build", "rbenv::user", "nodejs::nodejs_from_source"],
-          "json":
-            {
-              "rbenv": {
-                "user_installs": [{
-                  "user": "vagrant",
-                  "rubies": ["2.2.2"],
-                  "global": "2.2.2",
-                  "plugins": [
-                    {
-                      "name": "rbenv-gem-rehash",
-                      "git_url": "https://github.com/sstephenson/rbenv-gem-rehash"
-                    }
-                  ],
-                  "gems": {
-                    "2.2.2" : [{ "name": "bundler" }]
-                  }
-                }]
-              }
-            }
-        }
+  "push": {
+    "name": "ubuntu64-dev",
+    "vcs": true
+  },
+  "variables": {
+    "atlas_username": "{{env `ATLAS_USERNAME`}}",
+    "atlas_name": "{{env `ATLAS_NAME`}}",
+    "ubuntu_iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.3-server-amd64.iso",
+    "ubuntu_iso_hash": "a3b345908a826e262f4ea1afeb357fd09ec0558cf34e6c9112cead4bb55ccdfb",
+    "template_version": "1.1.7"
+  },
+  "provisioners": [{
+    "type": "shell",
+    "scripts": [
+      "scripts/base.sh",
+      "scripts/dep.sh",
+      "scripts/vagrant.sh",
+      "scripts/virtualbox.sh",
+      "scripts/vmware.sh",
+      "scripts/cleanup.sh",
+      "scripts/zerodisk.sh"
     ],
-    "builders": [
-        {
-            "type": "virtualbox-iso",
-            "iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
-            "iso_checksum": "8acd2f56bfcba2f7ac74a7e4a5e565ce68c024c38525c0285573e41c86ae90c0",
-            "iso_checksum_type": "sha256",
-            "boot_command": [
-                "<esc><esc><enter><wait>",
-                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
-                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-                "hostname={{ .Name }} ",
-                "fb=false debconf/frontend=noninteractive ",
-                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
-                "initrd=/install/initrd.gz -- <enter>"
-            ],
-            "headless": true,
-            "boot_wait": "10s",
-            "disk_size": 20480,
-            "guest_os_type": "Ubuntu_64",
-            "http_directory": "http",
-            "ssh_username": "vagrant",
-            "ssh_password": "vagrant",
-            "ssh_port": 22,
-            "ssh_wait_timeout": "10000s",
-            "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'",
-            "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-            "virtualbox_version_file": ".vbox_version"
-        },
-        {
-            "type": "vmware-iso",
-            "iso_url": "http://releases.ubuntu.com/14.04.2/ubuntu-14.04.2-server-amd64.iso",
-            "iso_checksum": "8acd2f56bfcba2f7ac74a7e4a5e565ce68c024c38525c0285573e41c86ae90c0",
-            "iso_checksum_type": "sha256",
-            "boot_command": [
-                "<esc><esc><enter><wait>",
-                "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
-                "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
-                "hostname={{ .Name }} ",
-                "fb=false debconf/frontend=noninteractive ",
-                "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
-                "initrd=/install/initrd.gz -- <enter>"
-            ],
-            "boot_wait": "10s",
-            "disk_size": 20480,
-            "guest_os_type": "Ubuntu-64",
-            "headless": true,
-            "http_directory": "http",
-            "skip_compaction": true,
-            "ssh_username": "vagrant",
-            "ssh_password": "vagrant",
-            "ssh_port": 22,
-            "ssh_wait_timeout": "10000s",
-            "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'",
-            "tools_upload_flavor": "linux"
-        }
-    ],
-    "post-processors": [
-        [{
-            "type": "vagrant",
-            "keep_input_artifact": false
-        },
-        {
-            "type": "atlas",
-            "only": ["vmware-iso"],
-            "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
-            "artifact_type": "vagrant.box",
-            "metadata": {
-                "provider": "vmware_desktop",
-                "created_at": "{{timestamp}}",
-                "version": "1.1.5"
-            }
-        },
-        {
-            "type": "atlas",
-            "only": ["virtualbox-iso"],
-            "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
-            "artifact_type": "vagrant.box",
-            "metadata": {
-                "provider": "virtualbox",
-                "created_at": "{{timestamp}}",
-                "version": "1.1.5"
-            }
+    "override": {
+      "virtualbox-iso": {
+        "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+      },
+      "vmware-iso": {
+        "execute_command": "echo 'vagrant'|sudo -S bash '{{.Path}}'"
+      }
+    }
+  }, {
+    "type": "chef-solo",
+    "cookbook_paths": ["cookbooks"],
+    "run_list": ["apt", "ruby_build", "rbenv::user", "nodejs::nodejs_from_source"],
+    "json": {
+      "rbenv": {
+        "user_installs": [{
+          "user": "vagrant",
+          "rubies": ["2.2.2"],
+          "global": "2.2.2",
+          "plugins": [{
+            "name": "rbenv-gem-rehash",
+            "git_url": "https://github.com/sstephenson/rbenv-gem-rehash"
+          }],
+          "gems": {
+            "2.2.2": [{
+              "name": "bundler"
+            }]
+          }
         }]
-    ]
+      }
+    }
+  }],
+  "builders": [{
+    "type": "virtualbox-iso",
+    "iso_url": "{{user `ubuntu_iso_url`}}",
+    "iso_checksum": "{{user `ubuntu_iso_hash`}}",
+    "iso_checksum_type": "sha256",
+    "boot_command": [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+      "hostname={{ .Name }} ",
+      "fb=false debconf/frontend=noninteractive ",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+      "initrd=/install/initrd.gz -- <enter>"
+    ],
+    "headless": true,
+    "boot_wait": "10s",
+    "disk_size": 20480,
+    "guest_os_type": "Ubuntu_64",
+    "http_directory": "http",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+    "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'",
+    "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+    "virtualbox_version_file": ".vbox_version"
+  }, {
+    "type": "vmware-iso",
+    "iso_url": "{{user `ubuntu_iso_url`}}",
+    "iso_checksum": "{{user `ubuntu_iso_hash`}}",
+    "iso_checksum_type": "sha256",
+    "boot_command": [
+      "<esc><esc><enter><wait>",
+      "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
+      "debian-installer=en_US auto locale=en_US kbd-chooser/method=us ",
+      "hostname={{ .Name }} ",
+      "fb=false debconf/frontend=noninteractive ",
+      "keyboard-configuration/modelcode=SKIP keyboard-configuration/layout=USA keyboard-configuration/variant=USA console-setup/ask_detect=false ",
+      "initrd=/install/initrd.gz -- <enter>"
+    ],
+    "boot_wait": "10s",
+    "disk_size": 20480,
+    "guest_os_type": "Ubuntu-64",
+    "headless": true,
+    "http_directory": "http",
+    "skip_compaction": true,
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_port": 22,
+    "ssh_wait_timeout": "10000s",
+    "shutdown_command": "echo '/sbin/halt -h -p' > shutdown.sh; echo 'vagrant'|sudo -S bash 'shutdown.sh'",
+    "tools_upload_flavor": "linux"
+  }],
+  "post-processors": [
+    [{
+      "type": "vagrant",
+      "keep_input_artifact": false
+    }, {
+      "type": "atlas",
+      "only": ["vmware-iso"],
+      "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+        "provider": "vmware_desktop",
+        "created_at": "{{timestamp}}",
+        "version": "{{user `template_version`}}"
+      }
+    }, {
+      "type": "atlas",
+      "only": ["virtualbox-iso"],
+      "artifact": "{{user `atlas_username`}}/{{user `atlas_name`}}",
+      "artifact_type": "vagrant.box",
+      "metadata": {
+        "provider": "virtualbox",
+        "created_at": "{{timestamp}}",
+        "version": "{{user `template_version`}}"
+      }
+    }]
+  ]
 }
