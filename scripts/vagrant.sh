@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Add the vagrant user
-
 # Vagrant specific
 date > /etc/vagrant_box_build_time
 
@@ -11,7 +9,7 @@ wget --no-check-certificate 'https://raw.github.com/mitchellh/vagrant/master/key
 chmod 0600 /home/vagrant/.ssh/authorized_keys
 chown -R vagrant /home/vagrant/.ssh
 
-#Add vagrant user to passwordless sudo
+# Add vagrant user to passwordless sudo
 cp /etc/sudoers{,.orig}
 sed -i -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers
 

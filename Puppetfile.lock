@@ -1,0 +1,16 @@
+FORGE
+  remote: https://forgeapi.puppetlabs.com
+  specs:
+    artberri-nvm (1.0.0)
+      puppetlabs-stdlib (< 5.0.0, >= 3.2.0)
+    jdowning-rbenv (2.0.0)
+      puppetlabs-stdlib (< 5.0.0, >= 4.1.0)
+    puppetlabs-git (0.4.0)
+      puppetlabs-stdlib (>= 3.2.0)
+    puppetlabs-stdlib (4.9.0)
+
+DEPENDENCIES
+  artberri-nvm (>= 0)
+  jdowning-rbenv (>= 0)
+  puppetlabs-git (>= 0)
+
