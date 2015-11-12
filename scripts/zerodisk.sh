@@ -6,5 +6,3 @@ rm -f /EMPTY
 
 # Sync to ensure that the delete completes before this moves on.
 sync
-sync
-sync

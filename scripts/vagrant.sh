@@ -1,8 +1,6 @@
 #!/bin/bash
 
 # Add the vagrant user
-#adduser vagrant vagrant
-#adduser vagrant sudo
 
 # Vagrant specific
 date > /etc/vagrant_box_build_time
