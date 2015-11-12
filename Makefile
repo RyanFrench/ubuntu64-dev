@@ -6,3 +6,6 @@ validate:
 
 build:
 	packer build --only=vmware-iso template.json
+
+update_cookbooks:
+	berks vendor ./cookbooks
