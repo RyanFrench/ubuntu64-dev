@@ -1,7 +1,7 @@
 DEPENDENCIES
   apt
   build-essential
-  nodejs
+  nvm
   rbenv
     git: git@github.com:chef-rbenv/chef-rbenv.git
     revision: ddff244e74b88c38fb4ef91939d251fe72c86828
@@ -9,30 +9,25 @@ DEPENDENCIES
   vim
 
 GRAPH
-  7-zip (1.0.2)
-    windows (>= 1.2.2)
   apt (2.7.0)
-  ark (0.9.0)
-    7-zip (>= 0.0.0)
-    windows (>= 0.0.0)
   build-essential (2.2.3)
   chef_handler (1.2.0)
-  homebrew (1.13.0)
-    build-essential (>= 2.1.2)
-  java (1.31.0)
-  nodejs (2.4.0)
-    apt (>= 0.0.0)
-    ark (>= 0.0.0)
+  dmg (2.3.0)
+  git (4.3.4)
     build-essential (>= 0.0.0)
-    homebrew (>= 0.0.0)
+    dmg (>= 0.0.0)
+    windows (>= 0.0.0)
     yum-epel (>= 0.0.0)
+  java (1.31.0)
+  nvm (0.1.6)
+    git (>= 2.1.0)
   rbenv (0.8.0)
     java (> 1.4.0)
     ruby_build (>= 0.0.0)
   ruby_build (0.8.0)
   vim (1.1.2)
-  windows (1.38.1)
+  windows (1.38.3)
     chef_handler (>= 0.0.0)
-  yum (3.6.3)
-  yum-epel (0.6.2)
+  yum (3.8.2)
+  yum-epel (0.6.4)
     yum (~> 3.2)
