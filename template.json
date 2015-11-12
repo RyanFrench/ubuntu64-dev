@@ -32,8 +32,15 @@
   }, {
     "type": "chef-solo",
     "cookbook_paths": ["cookbooks"],
-    "run_list": ["apt", "ruby_build", "rbenv::user", "nodejs::nodejs_from_source"],
+    "run_list": ["apt", "ruby_build", "rbenv::user", "nvm"],
     "json": {
+      "nvm": {
+        "nvm_install": {
+          "name":"0.12",
+          "from_source": false,
+          "alias_as_default": true
+        }
+      },
       "rbenv": {
         "user_installs": [{
           "user": "vagrant",
