@@ -5,5 +5,4 @@ packer_*
 
 # puppet
 .librarian/
-puppet/modules/
 .tmp/
