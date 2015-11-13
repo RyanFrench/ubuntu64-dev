@@ -8,7 +8,7 @@
     "atlas_name": "{{env `ATLAS_NAME`}}",
     "ubuntu_iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.3-server-amd64.iso",
     "ubuntu_iso_hash": "a3b345908a826e262f4ea1afeb357fd09ec0558cf34e6c9112cead4bb55ccdfb",
-    "template_version": "2.0.0"
+    "template_version": "2.0.1"
   },
   "provisioners": [{
     "type": "shell",
