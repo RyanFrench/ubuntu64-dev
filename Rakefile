@@ -22,6 +22,8 @@ namespace :packer do
   end
 
   task :test do
+    ENV['ATLAS_NAME'] = 'ubuntu64-dev'
+    ENV['ATLAS_USERNAME'] = 'RyanFrench'
     system 'packer build --only=vmware-iso template.json'
   end
 end
