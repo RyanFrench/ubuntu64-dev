@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Install the VMWare Open Tools
-yum install -y open-vm-tools
+apt-get install -y open-vm-tools
