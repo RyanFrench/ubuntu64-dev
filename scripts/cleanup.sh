@@ -16,5 +16,5 @@ echo "pre-up sleep 2" >> /etc/network/interfaces
 
 # Clean apt cache
 echo "Cleaning up unused dependencies"
-apt-get autoremove -y > /dev/null
-apt-get clean > /dev/null
+apt-get autoremove -y 
+apt-get clean 

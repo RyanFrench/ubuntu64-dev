@@ -3,8 +3,8 @@
 perl -p -i -e 's#http://us.archive.ubuntu.com/ubuntu#http://mirror.rackspace.com/ubuntu#gi' /etc/apt/sources.list
 
 # Update apt
-apt-get -y update > /dev/null
-apt-get -y upgrade > /dev/null
+apt-get -y update 
+apt-get -y upgrade 
 
 # Tweak sshd to prevent DNS resolution (speed up logins)
 echo 'UseDNS no' >> /etc/ssh/sshd_config
@@ -15,7 +15,7 @@ cat <<EOF > /etc/default/grub
 # /boot/grub/grub.cfg.
 GRUB_DEFAULT=0
 GRUB_TIMEOUT=0
-GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2 || echo Debian`
 GRUB_CMDLINE_LINUX_DEFAULT="quiet"
 GRUB_CMDLINE_LINUX="debian-installer=en_US"
 EOF
