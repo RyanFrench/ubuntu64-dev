@@ -6,9 +6,10 @@
   "variables": {
     "atlas_username": "{{env `ATLAS_USERNAME`}}",
     "atlas_name": "{{env `ATLAS_NAME`}}",
-    "ubuntu_iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.3-server-amd64.iso",
-    "ubuntu_iso_hash": "a3b345908a826e262f4ea1afeb357fd09ec0558cf34e6c9112cead4bb55ccdfb",
-    "template_version": "2.0.1"
+    "iso_url": "http://releases.ubuntu.com/trusty/ubuntu-14.04.3-server-amd64.iso",
+    "iso_checksum": "a3b345908a826e262f4ea1afeb357fd09ec0558cf34e6c9112cead4bb55ccdfb",
+    "iso_checksum_type": "sha256",
+    "template_version": "2.0.2"
   },
   "provisioners": [{
     "type": "shell",
@@ -38,9 +39,9 @@
   }],
   "builders": [{
     "type": "virtualbox-iso",
-    "iso_url": "{{user `ubuntu_iso_url`}}",
-    "iso_checksum": "{{user `ubuntu_iso_hash`}}",
-    "iso_checksum_type": "sha256",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "boot_command": [
       "<esc><esc><enter><wait>",
       "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
@@ -64,9 +65,9 @@
     "virtualbox_version_file": ".vbox_version"
   }, {
     "type": "vmware-iso",
-    "iso_url": "{{user `ubuntu_iso_url`}}",
-    "iso_checksum": "{{user `ubuntu_iso_hash`}}",
-    "iso_checksum_type": "sha256",
+    "iso_url": "{{user `iso_url`}}",
+    "iso_checksum": "{{user `iso_checksum`}}",
+    "iso_checksum_type": "{{user `iso_checksum_type`}}",
     "boot_command": [
       "<esc><esc><enter><wait>",
       "/install/vmlinuz noapic preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg ",
