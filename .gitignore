@@ -6,3 +6,6 @@ packer_*
 # puppet
 .librarian/
 .tmp/
+
+# vagrant
+.vagrant/
