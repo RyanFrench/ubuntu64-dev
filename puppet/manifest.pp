@@ -6,5 +6,9 @@ rbenv::plugin { 'sstephenson/rbenv-gem-rehash': }
 
 class { 'nvm':
   user         => 'vagrant',
-  install_node => '0.12'
+}
+
+nvm::node::install { '0.12':
+  user    => 'vagrant',
+  default => true,
 }
