@@ -9,3 +9,6 @@ packer_*
 
 # vagrant
 .vagrant/
+
+# bundler
+.bundle/
